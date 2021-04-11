@@ -1,0 +1,12 @@
+[package]
+name = "rust_python_bindings"
+version = "0.1.0"
+authors = ["pseres <peet.seres@gmail.com>"]
+
+[lib]
+name = "hello_rust"
+crate-type = ["cdylib"]
+
+[dependencies.cpython]
+version = "0.5"
+features = ["extension-module"]
