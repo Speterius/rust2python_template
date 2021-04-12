@@ -1,12 +1,40 @@
-extern crate cpython;
-use cpython::{py_fn, py_module_initializer, PyResult, Python};
+extern crate pyo3;
+use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
 
-fn add(_: Python, a: i64, b: i64) -> PyResult<i64> {
+#[pyfunction]
+fn add(a: i64, b: i64) -> PyResult<i64> {
     Ok(a + b)
 }
 
-py_module_initializer!(hello_rust, |py, m| {
-    m.add(py, "__doc__", "This module is implemented in Rust.")?;
-    m.add(py, "add", py_fn!(py, add(a: i64, b: i64)))?;
+#[pyclass]
+struct Rectangle {
+    #[pyo3(get, set)]
+    width: f64,
+
+    #[pyo3(get)]
+    height: f64,
+}
+
+#[pymethods]
+impl Rectangle {
+    #[new]
+    pub fn new(w: f64, h: f64) -> Self {
+        Rectangle {
+            width: w,
+            height: h,
+        }
+    }
+
+    pub fn area(&self) -> PyResult<f64> {
+        Ok(self.width * self.height)
+    }
+}
+
+#[pymodule]
+fn hello_rust(_: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(add, m)?)?;
+    m.add_class::<Rectangle>()?;
+
     Ok(())
-});
+}
