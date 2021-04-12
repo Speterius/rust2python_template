@@ -1,26 +1,33 @@
 # rust2python_template
 
-This repository is a template to create Rust bindings for Python. This example creates a python module called `hello_rust` with a function `add(a, b)` that adds two integers.
+This repository is a template to create Rust bindings for Python. 
+
+This example creates a python module called `hello_rust` with a function `add(a, b)` that adds two 
+integers, and a class called `Rectangle(w, h)` with fields `width` and `height` and a method called `area()`.
 
 ## Setup
 
-Clone the repository.
+0) Install Rust and `cargo`
 
-Do not use `venv`, because the `setuptools-rust` package will not set the correct python lib folder and compilation and linking will fail.
+1) Clone the repository.
 
-Make sure you have the packages installed, from `requirements.txt`
+2) `python -m venv venv`
 
-Make sure you have Rust and cargo installed.
+3) `venv\scripts\activate` or `source venv/bin/activate`
+
+4) `pip install -r requirements.txt`
 
 ## Usage
 
-Check if it compiles properly:
+Maturin for development:
 
-    cargo build --release
-
-Use the setuptools to make a python package:
-
-    python setup.py develop
+    maturin develop
     
-Run the unit tests in python
+Run the unit tests:
+
+    pytest
+
+Distribute the `wheel` file using:
+
+    maturin build
 
